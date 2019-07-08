@@ -78,7 +78,7 @@ picturesList.appendChild(fragment);
 // add comments - start
 
 var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
+// bigPicture.classList.remove('hidden');
 
 var renderBigPhoto = function (bigPhoto) {
   bigPicture.querySelector('.big-picture__img > img').src = bigPhoto.url;
@@ -110,4 +110,113 @@ commentListBP.appendChild(BPFragment);
 
 document.querySelector('.social__comment-count').classList.add('visually-hidden');
 document.querySelector('.social__comments-loader').classList.add('visually-hidden');
+
 // add comment - end
+
+// show editor img - start
+
+var uploadFile = document.querySelector('#upload-file');
+var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+var closeUploadOverlay = imgUploadOverlay.querySelector('.img-upload__cancel');
+var ESC_KEYCODE = 27;
+
+var openimgOverlay = function () {
+  imgUploadOverlay.classList.remove('hidden');
+
+  document.addEventListener('keydown', pressEscClose);
+};
+
+var closeImgOverlay = function () {
+  imgUploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', pressEscClose);
+
+  removeEffectClass();
+
+  uploadFile.value = '';
+};
+
+var pressEscClose = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeImgOverlay();
+  }
+};
+
+uploadFile.addEventListener('change', function () {
+  openimgOverlay();
+});
+
+closeUploadOverlay.addEventListener('click', function () {
+  closeImgOverlay();
+});
+
+// show editor img - end
+
+// add effects on img - start
+
+var imgEffectsList = document.querySelectorAll('.effects__preview');
+var imgUploadPreview = document.querySelector('.img-upload__preview');
+var list = document.querySelector('.effects__list');
+
+var removeEffectClass = function () {
+  for (i = 0; i < imgEffectsList.length; i++) {
+    imgUploadPreview.classList.remove(imgEffectsList[i].classList[1]);
+  }
+};
+
+list.addEventListener('click', function (evt) {
+  var target = evt.target;
+  var value = target.classList[1];
+
+  imgUploadPreview.classList.add(value);
+  imgUploadPreview.classList.remove('visually-hidden');
+
+  if (imgUploadPreview.classList.length > 2) {
+    removeEffectClass();
+    imgUploadPreview.classList.add(value);
+  }
+});
+
+// add effects on img - end
+
+// add drag and drop effect - start
+
+// TODO: create drag'n'drop
+
+// add drag and drop effect - end
+
+// resize img - start
+
+var resizeControlMinus = document.querySelector('.scale__control--smaller');
+var resizeControlPlus = document.querySelector('.scale__control--bigger');
+var resizeControlValue = document.querySelector('.scale__control--value');
+var summ = 100;
+var reducePhoto = function () {
+  summ -= 25;
+
+  if (summ < 25) {
+    summ = 25;
+  }
+
+  resizeControlValue.value = summ + '%';
+  imgUploadPreview.style.transform = 'scale(' + (summ / 100) + ')';
+};
+
+var increasePhoto = function () {
+  summ += 25;
+
+  if (summ > 100) {
+    summ = 100;
+  }
+  resizeControlValue.value = summ + '%';
+  imgUploadPreview.style.transform = 'scale(' + (summ / 100) + ')';
+};
+
+resizeControlMinus.addEventListener('click', function () {
+  reducePhoto();
+});
+
+resizeControlPlus.addEventListener('click', function () {
+  increasePhoto();
+});
+
+// resize img - end
