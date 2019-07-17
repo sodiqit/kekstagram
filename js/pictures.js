@@ -121,6 +121,9 @@ var openimgOverlay = function () {
   imgUploadOverlay.classList.remove('hidden');
 
   document.addEventListener('keydown', pressEscClose);
+
+  levelPin.style.left = 453 + 'px';
+  levelDepth.style.width = levelPin.style.left;
 };
 
 var closeImgOverlay = function () {
@@ -130,6 +133,8 @@ var closeImgOverlay = function () {
   removeEffectClass();
 
   uploadFile.value = '';
+
+  imgUploadPreview.style.filter = '';
 };
 
 var pressEscClose = function (evt) {
@@ -166,6 +171,12 @@ list.addEventListener('click', function (evt) {
 
   imgUploadPreview.classList.add(value);
   imgUploadPreview.classList.remove('visually-hidden');
+  imgUploadPreview.classList.remove('undefined');
+
+  levelPin.style.left = 453 + 'px';
+  levelDepth.style.width = levelPin.style.left;
+
+  checkEffect(imgUploadPreview.classList[1], 453);
 
   if (imgUploadPreview.classList.length > 2) {
     removeEffectClass();
@@ -177,7 +188,109 @@ list.addEventListener('click', function (evt) {
 
 // add drag and drop effect - start
 
-// TODO: create drag'n'drop
+var levelValue = document.querySelector('.effect-level__value');
+var levelLine = document.querySelector('.effect-level__line');
+var levelPin = document.querySelector('.effect-level__pin');
+var levelDepth = document.querySelector('.effect-level__depth');
+
+var checkEffect = function (effect, numberEffect) {
+  switch (effect) {
+    case 'effects__preview--chrome':
+      imgUploadPreview.style.filter = 'grayscale(' + (numberEffect / 453) + ')';
+      break;
+    case 'effects__preview--sepia':
+      imgUploadPreview.style.filter = 'sepia(' + (numberEffect / 453) + ')';
+      break;
+    case 'effects__preview--marvin':
+      imgUploadPreview.style.filter = 'invert(' + (numberEffect / 453 * 100) + '%' + ')';
+      break;
+    case 'effects__preview--phobos':
+      imgUploadPreview.style.filter = 'blur(' + ((numberEffect / 453) * 3) + 'px' + ')';
+      break;
+    case 'effects__preview--heat':
+      imgUploadPreview.style.filter = 'brightness(' + ((numberEffect / 453 + 1) * 1.5) + ')';
+      break;
+    case 'effects__preview--none':
+      imgUploadPreview.style.filter = '';
+      break;
+  }
+};
+
+var onLevelLineDown = function (evt) {
+  evt.preventDefault();
+
+  var positionPin = levelPin.getBoundingClientRect();
+
+  var startCoords = {
+    x: evt.clientX
+  };
+
+  var shift = {
+    x: startCoords.x - positionPin.x
+  };
+
+  levelPin.style.left = (levelPin.offsetLeft + shift.x - 9) + 'px';
+  levelDepth.style.width = levelPin.style.left;
+  levelValue.value = Math.floor(levelPin.offsetLeft / 453 * 100);
+
+  checkEffect(imgUploadPreview.classList[1], levelPin.offsetLeft);
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onLevelLineDown);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+};
+
+levelLine.addEventListener('mousedown', onLevelLineDown);
+
+levelPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var newCoords = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    levelPin.style.left = (levelPin.offsetLeft - newCoords.x) + 'px';
+    levelDepth.style.width = levelPin.style.left;
+    levelValue.value = Math.floor(levelPin.offsetLeft / 453 * 100);
+
+    checkEffect(imgUploadPreview.classList[1], levelPin.offsetLeft);
+
+    if (levelPin.offsetLeft <= 0) {
+      levelPin.style.left = 0;
+      levelDepth.style.width = 0;
+    } else if (levelPin.offsetLeft >= 453) {
+      levelPin.style.left = 453 + 'px';
+      levelDepth.style.width = 453 + 'px';
+    }
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
 
 // add drag and drop effect - end
 
@@ -291,8 +404,6 @@ hashtagInput.addEventListener('input', function () {
       hashtagInput.setCustomValidity('Хештеги должны быть отделены друг от друга пробелами!');
     } else if (hashtag[i].length <= 1) {
       hashtagInput.setCustomValidity('Хештеги не могут состоять из одной #!');
-    } else {
-      hashtagInput.setCustomValidity('');
     }
 
     for (j = 0; j < i; j++) {
