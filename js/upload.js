@@ -22,10 +22,24 @@
     label.click();
   };
 
-  for (var i = 0; i < errorButtons.length; i++) {
-    var button = errorButtons[i];
-    button.addEventListener('click', click);
-  }
+  var refreshSubmit = function () {
+    window.backend.save(new FormData(form), function () {
+      window.closeImgOverlay();
+      renderSuccessPopup();
+      openSuccessPopup(el);
+      window.uploadFile.value = '';
+      window.hashtagInput.value = '';
+      window.textDescription.value = '';
+    }, window.error, function () {
+      openSuccessPopup(elError);
+    });
+  };
+
+  errorButtons[0].addEventListener('click', function () {
+    refreshSubmit();
+  });
+
+  errorButtons[1].addEventListener('click', click);
 
   var renderSuccessPopup = function () {
     document.body.appendChild(el);
