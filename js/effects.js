@@ -1,13 +1,14 @@
 'use strict';
 
 (function () {
-  var uploadFile = document.querySelector('#upload-file');
-  var imgUploadOverlay = document.querySelector('.img-upload__overlay');
-  var closeUploadOverlay = imgUploadOverlay.querySelector('.img-upload__cancel');
+  window.uploadFile = document.querySelector('#upload-file');
+  window.imgUploadOverlay = document.querySelector('.img-upload__overlay');
+  var closeUploadOverlay = window.imgUploadOverlay.querySelector('.img-upload__cancel');
   window.ESC_KEYCODE = 27;
+  var imgChange = window.imgUploadOverlay.querySelector('.img-upload__preview > img');
 
   var openimgOverlay = function () {
-    imgUploadOverlay.classList.remove('hidden');
+    window.imgUploadOverlay.classList.remove('hidden');
 
     document.addEventListener('keydown', window.pressEscClose);
 
@@ -15,42 +16,43 @@
     window.levelDepth.style.width = window.levelPin.style.left;
   };
 
-  var closeImgOverlay = function () {
-    imgUploadOverlay.classList.add('hidden');
+  window.closeImgOverlay = function () {
+    window.imgUploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', window.pressEscClose);
 
     removeEffectClass();
 
-    uploadFile.value = '';
+    window.uploadFile.value = '';
 
     window.imgUploadPreview.style.filter = '';
   };
 
   window.pressEscClose = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
-      closeImgOverlay();
+      window.closeImgOverlay();
     }
   };
 
-  uploadFile.addEventListener('change', function () {
+  window.uploadFile.addEventListener('change', function () {
     openimgOverlay();
+    // imgChange.src = window.uploadFile.value; //TODO:
   });
 
   closeUploadOverlay.addEventListener('click', function () {
-    closeImgOverlay();
+    window.closeImgOverlay();
   });
 
   // show editor img - end
 
   // add effects on img - start
 
-  var imgEffectsList = document.querySelectorAll('.effects__preview');
+  window.imgEffectsList = document.querySelectorAll('.effects__preview');
   window.imgUploadPreview = document.querySelector('.img-upload__preview');
   var list = document.querySelector('.effects__list');
 
   var removeEffectClass = function () {
-    for (var i = 0; i < imgEffectsList.length; i++) {
-      window.imgUploadPreview.classList.remove(imgEffectsList[i].classList[1]);
+    for (var i = 0; i < window.imgEffectsList.length; i++) {
+      window.imgUploadPreview.classList.remove(window.imgEffectsList[i].classList[1]);
     }
   };
 
