@@ -112,8 +112,6 @@
 
     // show bigPhoto - end
   }, window.error);
-
-
 })();
 
 

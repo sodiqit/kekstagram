@@ -1,13 +1,14 @@
 'use strict';
 
 (function () {
-  var uploadFile = document.querySelector('#upload-file');
-  var imgUploadOverlay = document.querySelector('.img-upload__overlay');
-  var closeUploadOverlay = imgUploadOverlay.querySelector('.img-upload__cancel');
+  window.uploadFile = document.querySelector('#upload-file');
+  window.imgUploadOverlay = document.querySelector('.img-upload__overlay');
+  var closeUploadOverlay = window.imgUploadOverlay.querySelector('.img-upload__cancel');
   window.ESC_KEYCODE = 27;
+  var imgChange = window.imgUploadOverlay.querySelector('.img-upload__preview > img');
 
   var openimgOverlay = function () {
-    imgUploadOverlay.classList.remove('hidden');
+    window.imgUploadOverlay.classList.remove('hidden');
 
     document.addEventListener('keydown', window.pressEscClose);
 
@@ -16,12 +17,12 @@
   };
 
   var closeImgOverlay = function () {
-    imgUploadOverlay.classList.add('hidden');
+    window.imgUploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', window.pressEscClose);
 
     removeEffectClass();
 
-    uploadFile.value = '';
+    window.uploadFile.value = '';
 
     window.imgUploadPreview.style.filter = '';
   };
@@ -32,8 +33,9 @@
     }
   };
 
-  uploadFile.addEventListener('change', function () {
+  window.uploadFile.addEventListener('change', function () {
     openimgOverlay();
+    // imgChange.src = window.uploadFile.value; //TODO:
   });
 
   closeUploadOverlay.addEventListener('click', function () {
