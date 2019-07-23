@@ -16,7 +16,7 @@
     window.levelDepth.style.width = window.levelPin.style.left;
   };
 
-  var closeImgOverlay = function () {
+  window.closeImgOverlay = function () {
     window.imgUploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', window.pressEscClose);
 
@@ -29,7 +29,7 @@
 
   window.pressEscClose = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
-      closeImgOverlay();
+      window.closeImgOverlay();
     }
   };
 
@@ -39,20 +39,20 @@
   });
 
   closeUploadOverlay.addEventListener('click', function () {
-    closeImgOverlay();
+    window.closeImgOverlay();
   });
 
   // show editor img - end
 
   // add effects on img - start
 
-  var imgEffectsList = document.querySelectorAll('.effects__preview');
+  window.imgEffectsList = document.querySelectorAll('.effects__preview');
   window.imgUploadPreview = document.querySelector('.img-upload__preview');
   var list = document.querySelector('.effects__list');
 
   var removeEffectClass = function () {
-    for (var i = 0; i < imgEffectsList.length; i++) {
-      window.imgUploadPreview.classList.remove(imgEffectsList[i].classList[1]);
+    for (var i = 0; i < window.imgEffectsList.length; i++) {
+      window.imgUploadPreview.classList.remove(window.imgEffectsList[i].classList[1]);
     }
   };
 

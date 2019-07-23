@@ -41,14 +41,16 @@
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
-      window.imgUploadOverlay.classList.add('hidden');
+      window.closeImgOverlay();
       renderSuccessPopup();
       openSuccessPopup(el);
+      window.uploadFile.value = '';
+      window.hashtagInput.value = '';
+      window.textDescription.value = '';
     }, window.error, function () {
       openSuccessPopup(elError);
     });
 
-    window.uploadFile.value = '';
     evt.preventDefault();
   });
 
