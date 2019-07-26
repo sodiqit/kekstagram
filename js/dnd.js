@@ -7,7 +7,7 @@
   var levelLine = document.querySelector('.effect-level__line');
   window.levelPin = document.querySelector('.effect-level__pin');
   window.levelDepth = document.querySelector('.effect-level__depth');
-
+  // TODO: Refarctoring this shit!!!
   window.checkEffect = function (effect, numberEffect) {
     switch (effect) {
       case 'effects__preview--chrome':
