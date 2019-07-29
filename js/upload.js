@@ -61,6 +61,7 @@
       window.uploadFile.value = '';
       window.hashtagInput.value = '';
       window.textDescription.value = '';
+      document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     }, window.error, function () {
       openSuccessPopup(elError);
     });

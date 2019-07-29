@@ -5,7 +5,7 @@
   window.imgUploadOverlay = document.querySelector('.img-upload__overlay');
   var closeUploadOverlay = window.imgUploadOverlay.querySelector('.img-upload__cancel');
   window.ESC_KEYCODE = 27;
-  var imgChange = window.imgUploadOverlay.querySelector('.img-upload__preview > img');
+  // var imgChange = window.imgUploadOverlay.querySelector('.img-upload__preview > img');
 
   var openimgOverlay = function () {
     window.imgUploadOverlay.classList.remove('hidden');
