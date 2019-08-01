@@ -96,7 +96,7 @@
     if (bigPhoto.comments.length > 5) {
       window.bigPicture.querySelector('.comment_quantity').textContent = '5';
     } else {
-      window.bigPicture.querySelector('.comment_quantity').textContent = '1';
+      window.bigPicture.querySelector('.comment_quantity').textContent = bigPhoto.comments.length;
     }
   };
 
